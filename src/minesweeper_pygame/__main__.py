@@ -84,6 +84,16 @@ def draw_grid(screen, grid, cell_size):
                 text_rect = text_surface.get_rect(center=(col * cell_size + cell_size//2, row * cell_size + cell_size//2))
                 screen.blit(text_surface, text_rect)
 
+def reveal_adjacent_cells(row, col, grid):
+    if row < 0 or row >= ROWS or col < 0 or col >= COLS or grid[row][col].is_open:
+        return
+    grid[row][col].is_open = True
+    if grid[row][col].number == 0:
+        for r in range(row-1, row+2):
+            for c in range(col-1, col+2):
+                reveal_adjacent_cells(r, c, grid)
+
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -113,7 +123,7 @@ def main():
                 row, col = event.pos[1] // CELL_SIZE, event.pos[0] // CELL_SIZE
                 cell = grid[row][col]
                 if event.button == 1 and not cell.is_flagged:  # 左クリックでセルを開く
-                    cell.is_open = True
+                    reveal_adjacent_cells(row, col, grid)
                 elif event.button == 3:  # 右クリックで旗を立てる/取り除く
                     cell.is_flagged = not cell.is_flagged
         
