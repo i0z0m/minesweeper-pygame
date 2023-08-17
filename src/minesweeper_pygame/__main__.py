@@ -1,5 +1,7 @@
 import pygame
 import random
+from typing import List
+
 # マインスイーパーの本家デザインに近づけるためのコード
 
 # ゲームの設定
@@ -41,7 +43,8 @@ class Cell:
         self.is_flagged = False
         self.number = 0
 
-def init_grid(rows, cols, mine_count):
+
+def init_grid(rows: int, cols: int, mine_count: int) -> List[List[Cell]]:
     """グリッドを初期化する関数"""
     grid = [[Cell() for _ in range(cols)] for _ in range(rows)]
     mine_positions = random.sample(range(rows * cols), mine_count)
@@ -50,10 +53,12 @@ def init_grid(rows, cols, mine_count):
         col = pos % cols
         grid[row][col].is_mine = True
         # 周囲のセルの数字を計算
-        for r in range(max(row-1, 0), min(row+2, rows)):
-            for c in range(max(col-1, 0), min(col+2, cols)):
+        for r in range(max(row-1, 0), min(row+1, rows-1) + 1):
+            for c in range(max(col-1, 0), min(col+1, cols-1) + 1):
                 grid[r][c].number += 1
     return grid
+
+
 
 def draw_grid(screen, grid, cell_size):
     """グリッドを描画する関数"""
