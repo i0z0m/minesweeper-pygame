@@ -108,12 +108,6 @@ def main():
         screen.fill(WHITE)
         draw_grid(screen, grid, CELL_SIZE)
 
-        # マウスオーバーのセルを赤色で表示
-        mouse_pos = pygame.mouse.get_pos()
-        mouse_row = mouse_pos[1] // CELL_SIZE
-        mouse_col = mouse_pos[0] // CELL_SIZE
-        pygame.draw.rect(screen, RED, (mouse_col * CELL_SIZE, mouse_row * CELL_SIZE, CELL_SIZE, CELL_SIZE), 1)
-
         pygame.display.flip()
 
         for event in pygame.event.get():
