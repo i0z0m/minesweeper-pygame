@@ -105,7 +105,6 @@ def main():
     clock = pygame.time.Clock()
 
     grid = init_grid(ROWS, COLS, MINE_COUNT)
-    gameover = False
     # ゲームループ
     running = True
     while running:
@@ -117,11 +116,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif not gameover and event.type == pygame.MOUSEBUTTONDOWN:
+            elif event.type == pygame.MOUSEBUTTONDOWN:
                 row, col = event.pos[1] // CELL_SIZE, event.pos[0] // CELL_SIZE
                 cell = grid[row][col]
                 if event.button == 1 and cell.is_mine:
-                    gameover = True
                     reveal_all_cells(ROWS, COLS, grid);
                 if event.button == 1 and not cell.is_flagged:  # 左クリックでセルを開く
                     reveal_adjacent_cells(row, col, grid)
