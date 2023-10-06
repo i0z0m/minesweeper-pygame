@@ -93,6 +93,10 @@ def reveal_adjacent_cells(row, col, grid):
             for c in range(col-1, col+2):
                 reveal_adjacent_cells(r, c, grid)
 
+def reveal_all_cells(row, col, grid):
+    for row in range(ROWS):
+        for col in range(COLS):
+            grid[row][col].is_open = True
 
 def main():
     pygame.init()
@@ -101,7 +105,7 @@ def main():
     clock = pygame.time.Clock()
 
     grid = init_grid(ROWS, COLS, MINE_COUNT)
-
+    gameover = False
     # ゲームループ
     running = True
     while running:
@@ -113,15 +117,16 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+            elif not gameover and event.type == pygame.MOUSEBUTTONDOWN:
                 row, col = event.pos[1] // CELL_SIZE, event.pos[0] // CELL_SIZE
                 cell = grid[row][col]
+                if event.button == 1 and cell.is_mine:
+                    gameover = True
+                    reveal_all_cells(ROWS, COLS, grid);
                 if event.button == 1 and not cell.is_flagged:  # 左クリックでセルを開く
                     reveal_adjacent_cells(row, col, grid)
                 elif event.button == 3:  # 右クリックで旗を立てる/取り除く
                     cell.is_flagged = not cell.is_flagged
-        
-        clock.tick(60)
 
     pygame.quit()
 
