@@ -1,3 +1,3 @@
 # minesweeper-pygame
 
-Describe your project here.
+Minesweeper made by pygame co-produced with ChatGPT
